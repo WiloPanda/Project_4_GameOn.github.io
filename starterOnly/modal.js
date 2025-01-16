@@ -20,7 +20,7 @@ let email = document.getElementById("email")
 let date = document.getElementById("birthdate")
 
 // Regex validation
-let identityRegex = new RegExp("[A-zÀ-ÿ-]") /*validation for first and last name*/
+let identityRegex = new RegExp("^[A-zÀ-ÿ-]+$") /*validation for first and last name*/
 let emailRegex = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z0-9._-]+") /*validation for email*/
 
 // launch modal event
@@ -44,7 +44,7 @@ function closeModal() {
 function validateIdentity(identity) {
   if (identity.length >= 2 && identityRegex.test(identity)) {
     return true
-  }
+  } 
   return false
 }
 
@@ -56,10 +56,10 @@ function validateEmail(email) {
   return false
 }
 
-// Testing function
+// Launch function to validate form
 form.addEventListener("submit", (event) => {
 event.preventDefault()
-  if (validateIdentity(first) && validateIdentity(last) && validateEmail(email.value)) {
+  if (validateIdentity(firstName.value) && validateIdentity(lastName.value) && validateEmail(email.value)) {
     console.log("success")
 } else {
     console.log("error")
