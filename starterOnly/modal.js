@@ -19,6 +19,8 @@ let lastName = document.getElementById("last")
 let email = document.getElementById("email")
 let birthdate = document.getElementById("birthdate")
 let quantity = document.getElementById("quantity")
+let locations = document.querySelectorAll('input[name="location"]')
+let checkbox1 = document.getElementById("checkbox1")
 
 // Regex validation
 let identityRegex = new RegExp("^[A-zÀ-ÿ-]+$") /*validation for first and last name*/
@@ -78,12 +80,36 @@ function validateBirthdate(birthdate) {
     return true
   } 
   return false
+}
+
+// Function to validate location
+function validateLocation(location) {
+  for (let i = 0; i < location.length; i++) {
+    if (location[i].checked) {
+      return true
+    }
   }
+  return false
+}
+
+// Function to validate checkbox
+function validateCheckbox(checkbox) {
+  if (checkbox.checked) {
+    return true
+  } 
+  return false
+}
 
 // Launch function to validate form
 form.addEventListener("submit", (event) => {
 event.preventDefault()
-  if (validateIdentity(firstName.value) && validateIdentity(lastName.value) && validateEmail(email.value)) {
+  if (validateIdentity(firstName.value) && 
+      validateIdentity(lastName.value) && 
+      validateEmail(email.value) && 
+      validateQuantity(quantity.value) && 
+      validateBirthdate(birthdate.value) && 
+      validateLocation(locations) &&
+      validateCheckbox(checkbox1)) {
     console.log("success")
 } else {
     console.log("error")
