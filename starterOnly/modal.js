@@ -13,7 +13,7 @@ const modalbg = document.querySelector(".bground")
 const modalBtn = document.querySelectorAll(".modal-btn")
 const form = document.querySelector("form")
 
-// Inputs Elements
+// Form Elements
 let firstName = document.getElementById("first")
 let lastName = document.getElementById("last")
 let email = document.getElementById("email")
@@ -22,11 +22,20 @@ let quantity = document.getElementById("quantity")
 let locations = document.querySelectorAll('input[name="location"]')
 let checkbox1 = document.getElementById("checkbox1")
 
+// Error message
+const message = {
+  name: 'Veuillez renseigner un nom valide',
+  email: 'Veuillez renseigner une adresse mail valide.',
+  birthdate: 'Vous devez avoir plus de 18 ans pour participer',
+  quantity: 'Veuillez renseigner un nombre entre 0 et 99', 
+  locations: 'Veuillez sélectionner une ville',
+  conditions: `Vous devez accepter les conditions d'utilisation`
+}
 
 // Regex validation
-let identityRegex = new RegExp("^[A-zÀ-ÿ-]+$") /*validation for first and last name*/
-let emailRegex = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z0-9._-]+") /*validation for email*/
-let quantityRegex = new RegExp("^[0-9]+$") /*validation for quantity*/
+const identityRegex = new RegExp("^[A-zÀ-ÿ-]{2,}$") /*Regex validation for first and last name*/
+const emailRegex = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z0-9._-]+") /*Regex validation for email*/
+const quantityRegex = new RegExp("^[0-9]+$") /*Regex validation for quantity*/
 
 // Launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal))
@@ -46,38 +55,31 @@ function closeModal() {
 }
 
 // Function to validate first and last name
-function validateIdentity(identity) {
+function validateIdentity(identity, element, message) {
   console.log(identity)
-  if (identity === "") {
-    throw new Error("Veuillez renseigner ce champ")
-  }
-
-  if (identity.length < 2) {
-    throw new Error("Veuillez entrer 2 caractères minimum")
-  }
-
   if (!identityRegex.test(identity)) {
-    throw new Error("Veuillez entrer un nom valide")
+    showErrorMessage(element, message)
+    return false
   } 
+  hideErrorMessage(element)
 }
 
 // Function to validate email
-function validateEmail(email) {
+function validateEmail(email, element, message) {
   console.log(email)
-  if (email === "") {
-    throw new Error("Veuillez renseigner ce champ")
-  }
-
   if (!emailRegex.test(email)) {
-    throw new Error("Veuillez entrer une adresse email valide")
+    showErrorMessage(element, message)
+    return false
   } 
+  hideErrorMessage(element)
 }
 
 // Function to validate birthdate
-function validateBirthdate(birthdate) {
+function validateBirthdate(birthdate, element, message) {
   console.log(birthdate)
-  if (birthdate === "") {
-    throw new Error("Veuillez entrer votre date de naissance")
+  if (!birthdate) {
+    showErrorMessage(element, message)
+    return false
   }
   let today = new Date()
   let birthdateDate = new Date(birthdate)
@@ -86,61 +88,68 @@ function validateBirthdate(birthdate) {
   if (m < 0 || (m === 0 && today.getDate() < birthdateDate.getDate())) {
     age--
   }
-  if (age < 18) {
-    throw new Error("Vous devez être majeur pour participer")
-  } 
+  if (age < 18 || age > 100) {
+    showErrorMessage(element, message)
+    return false
+  }
+  hideErrorMessage(element)
 }
 
 // Function to validate quantity
-function validateQuantity(quantity) {
+function validateQuantity(quantity, element, message) {
   console.log(quantity)
-  if (quantity === "") {
-    throw new Error("Veuillez entrer le nombre de tournois auxquels vous avez participé")
-  }
-
-  if (quantity < 0 || quantity > 99) {
-    throw new Error("Le nombre de participations doit être compris entre 0 et 99")
-  }
-  
   if (!quantityRegex.test(quantity)) {
-    throw new Error("Veuillez entrer un chiffre ou un nombre valide")
+    showErrorMessage(element, message)
+    return false
   }
+  hideErrorMessage(element)
 }
 
 // Function to validate location
-function validateLocation(location) {
+function validateLocations(locations, message) {
   console.log(locations)
-  for (let i = 0; i < location.length; i++) {
-    if (location[i].unchecked) {
-      throw new Error("Veuillez choisir une ville")
+  for (let i = 0; i < locations.length; i++) {
+    if (locations[i].checked) {
+      hideErrorMessage(locations[0])
+      return true
     }
   }
+  showErrorMessage(locations[0], message)
+  return false
 }
 
 // Function to validate checkbox
-function validateCheckbox(checkbox) {
+function validateCheckbox(checkbox, element, message) {
   console.log(checkbox.checked)
-  if (!checkbox.checked) {
-    throw new Error("Vous devez accepter les conditions d'utilisation")
-  } 
+  if (checkbox.checked) {
+    hideErrorMessage(element) 
+    return true
+  }
+  showErrorMessage(element, message)
+  return false
 }
 
 // Function to  print error message
-function printErrorMessage(message) {
-
+function showErrorMessage(element, message){
+  element.parentElement.setAttribute('data-error-visible', 'true');
+  element.parentElement.setAttribute('data-error', message);
 }
 
+//Function to hide error message
+function hideErrorMessage(element) {
+  element.parentElement.removeAttribute('data-error-visible');
+  element.parentElement.removeAttribute('data-error');}
 
 // Launch function to validate form
 form.addEventListener("submit", (event) => {
 event.preventDefault()
-  try {validateIdentity(firstName.value)  
-      validateIdentity(lastName.value) 
-      validateEmail(email.value) 
-      validateBirthdate(birthdate.value)
-      validateQuantity(quantity.value)   
-      validateLocation(locations) 
-      validateCheckbox(checkbox1)
+  try {validateIdentity(firstName.value, firstName, message.name)  
+      validateIdentity(lastName.value, lastName, message.name) 
+      validateEmail(email.value, email, message.email) 
+      validateBirthdate(birthdate.value, birthdate, message.birthdate)
+      validateQuantity(quantity.value, quantity, message.quantity)   
+      validateLocations(locations, message.locations) 
+      validateCheckbox(checkbox1, checkbox1, message.conditions)
     console.log("success")
 } catch {
     console.log("error")
