@@ -11,6 +11,7 @@ function editNav() {
 // DOM Elements
 const modalbg = document.querySelector(".bground")
 const modalBtn = document.querySelectorAll(".modal-btn")
+const closeBtn = document.querySelectorAll(".close, .btnClose")
 const form = document.querySelector("form")
 
 // Form Elements
@@ -46,8 +47,7 @@ function launchModal() {
 }
 
 // Close modal event
-let closeBtn = document.querySelector(".close");
-closeBtn.addEventListener("click", closeModal);
+closeBtn.forEach((btn) => btn.addEventListener("click", closeModal))
 
 // Close modal function
 function closeModal() {
@@ -56,27 +56,26 @@ function closeModal() {
 
 // Function to validate first and last name
 function validateIdentity(identity, element, message) {
-  console.log(identity)
   if (!identityRegex.test(identity)) {
-    showErrorMessage(element, message)
+    showErrorMessage(element, message) 
     return false
   } 
   hideErrorMessage(element)
+  return true
 }
 
 // Function to validate email
 function validateEmail(email, element, message) {
-  console.log(email)
   if (!emailRegex.test(email)) {
     showErrorMessage(element, message)
     return false
   } 
   hideErrorMessage(element)
+  return true
 }
 
 // Function to validate birthdate
 function validateBirthdate(birthdate, element, message) {
-  console.log(birthdate)
   if (!birthdate) {
     showErrorMessage(element, message)
     return false
@@ -93,21 +92,21 @@ function validateBirthdate(birthdate, element, message) {
     return false
   }
   hideErrorMessage(element)
+  return true
 }
 
 // Function to validate quantity
 function validateQuantity(quantity, element, message) {
-  console.log(quantity)
   if (!quantityRegex.test(quantity)) {
     showErrorMessage(element, message)
     return false
   }
   hideErrorMessage(element)
+  return true
 }
 
 // Function to validate location
 function validateLocations(locations, message) {
-  console.log(locations)
   for (let i = 0; i < locations.length; i++) {
     if (locations[i].checked) {
       hideErrorMessage(locations[0])
@@ -140,17 +139,28 @@ function hideErrorMessage(element) {
   element.parentElement.removeAttribute('data-error-visible');
   element.parentElement.removeAttribute('data-error');}
 
+//Event to show validation message
+function showValidationMessage() {
+  let validationSection = document.querySelector(".validation");
+  let contentForm = document.querySelector("form");
+  validationSection.style.display = "block";
+  contentForm.style.display = "none";
+}
+
 // Launch function to validate form
 form.addEventListener("submit", (event) => {
 event.preventDefault()
-  try {validateIdentity(firstName.value, firstName, message.name)  
-      validateIdentity(lastName.value, lastName, message.name) 
-      validateEmail(email.value, email, message.email) 
-      validateBirthdate(birthdate.value, birthdate, message.birthdate)
-      validateQuantity(quantity.value, quantity, message.quantity)   
-      validateLocations(locations, message.locations) 
-      validateCheckbox(checkbox1, checkbox1, message.conditions)
-    console.log("success")
+  try {
+      if (validateIdentity(firstName.value, firstName, message.name) && 
+          validateIdentity(lastName.value, lastName, message.name) && 
+          validateEmail(email.value, email, message.email) && 
+          validateBirthdate(birthdate.value, birthdate, message.birthdate) && 
+          validateQuantity(quantity.value, quantity, message.quantity) && 
+          validateLocations(locations, message.locations) && 
+          validateCheckbox(checkbox1, checkbox1, message.conditions)) {
+          showValidationMessage()  
+        console.log("success")
+      }
 } catch {
     console.log("error")
     }

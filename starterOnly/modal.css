@@ -156,7 +156,7 @@ main {
   font-size: 16px;
 }
 
-.bground {
+.bground{
   display: none;
   position: fixed;
   z-index: 1;
@@ -180,6 +180,22 @@ main {
   position: relative;
   color: #fff;
   padding-top: 10px;
+}
+
+.validation {
+  display: none;
+}
+
+.btnClose {
+  background: #fe142f;
+  display: block;
+  margin: 0 auto;
+  border-radius: 7px;
+  font-size: 1rem;
+  padding: 12px 82px;
+  color: #fff;
+  cursor: pointer;
+  border: 0;
 }
 
 .modal-body {
@@ -324,7 +340,6 @@ input[data-error]::after {
   background: #fe142f;
   display: block;
   margin: 0 auto;
-  
   border-radius: 7px;
   font-size: 1rem;
   padding: 12px 82px;
