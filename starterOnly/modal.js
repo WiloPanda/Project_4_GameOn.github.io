@@ -34,9 +34,9 @@ const message = {
 }
 
 // Regex validation
-const identityRegex = new RegExp("^[A-zÀ-ÿ-]{2,}$") /*Regex validation for first and last name*/
-const emailRegex = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z0-9._-]+") /*Regex validation for email*/
-const quantityRegex = new RegExp("^[0-9]+$") /*Regex validation for quantity*/
+const regexIdentity = new RegExp("^[A-zÀ-ÿ-]{2,}$") /*Regex validation for first and last name*/
+const regexEmail = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\\.[a-z0-9._-]+") /*Regex validation for email*/
+const regexQuantity = new RegExp("^[0-9]+$") /*Regex validation for quantity*/
 
 // Launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal))
@@ -54,20 +54,10 @@ function closeModal() {
   modalbg.style.display = "none"
 }
 
-// Function to validate first and last name
-function validateIdentity(identity, element, message) {
-  if (!identityRegex.test(identity)) {
+// Function to validate first name, last name, email and quantity
+function validateIdentity(regex, element, message) {
+  if (!regex.test(element.value)) {
     showErrorMessage(element, message) 
-    return false
-  } 
-  hideErrorMessage(element)
-  return true
-}
-
-// Function to validate email
-function validateEmail(email, element, message) {
-  if (!emailRegex.test(email)) {
-    showErrorMessage(element, message)
     return false
   } 
   hideErrorMessage(element)
@@ -88,16 +78,6 @@ function validateBirthdate(birthdate, element, message) {
     age--
   }
   if (age < 18 || age > 100) {
-    showErrorMessage(element, message)
-    return false
-  }
-  hideErrorMessage(element)
-  return true
-}
-
-// Function to validate quantity
-function validateQuantity(quantity, element, message) {
-  if (!quantityRegex.test(quantity)) {
     showErrorMessage(element, message)
     return false
   }
@@ -151,13 +131,14 @@ function showValidationMessage() {
 form.addEventListener("submit", (event) => {
 event.preventDefault()
   try {
-      if (validateIdentity(firstName.value, firstName, message.name) && 
-          validateIdentity(lastName.value, lastName, message.name) && 
-          validateEmail(email.value, email, message.email) && 
-          validateBirthdate(birthdate.value, birthdate, message.birthdate) && 
-          validateQuantity(quantity.value, quantity, message.quantity) && 
-          validateLocations(locations, message.locations) && 
-          validateCheckbox(checkbox1, checkbox1, message.conditions)) {
+          let resultFirstName = validateIdentity(regexIdentity, firstName, message.name) 
+          let resultLastName = validateIdentity(regexIdentity, lastName, message.name) 
+          let resultEmail = validateIdentity(regexEmail, email, message.email) 
+          let resultBirthdate = validateBirthdate(birthdate.value, birthdate, message.birthdate) 
+          let resultQuantity = validateIdentity(regexQuantity, quantity, message.quantity) 
+          let resultLocations = validateLocations(locations, message.locations)
+          let resultCheckbox = validateCheckbox(checkbox1, checkbox1, message.conditions)
+      if (resultFirstName && resultLastName && resultEmail && resultBirthdate && resultQuantity && resultLocations && resultCheckbox) {
           showValidationMessage()  
         console.log("success")
       }
