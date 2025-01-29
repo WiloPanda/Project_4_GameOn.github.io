@@ -123,11 +123,11 @@ function hideErrorMessage(element) {
 function showValidationMessage() {
   let validationSection = document.querySelector(".validation");
   let contentForm = document.querySelector("form");
-  validationSection.style.display = "block";
+  validationSection.style.display = "flex";
   contentForm.style.display = "none";
 }
 
-// Launch function to validate form
+// Launch function to check if form is valid
 form.addEventListener("submit", (event) => {
 event.preventDefault()
   try {
