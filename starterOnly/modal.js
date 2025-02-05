@@ -131,9 +131,8 @@ function validateLocations(locations, message) {
  * @param {string} message - The error message to display
  * @returns {boolean} True if checkbox is checked, false otherwise
  */
-function validateCheckbox(checkbox, element, message) {
-  console.log(checkbox.checked)
-  if (checkbox.checked) {
+function validateCheckbox(element, message) {
+  if (element.checked) {
     hideErrorMessage(element) 
     return true
   }
@@ -181,7 +180,7 @@ event.preventDefault()
           let resultBirthdate = validateBirthdate(birthdate.value, birthdate, message.birthdate) 
           let resultQuantity = validateIdentity(regexQuantity, quantity, message.quantity) 
           let resultLocations = validateLocations(locations, message.locations)
-          let resultCheckbox = validateCheckbox(checkbox1, checkbox1, message.conditions)
+          let resultCheckbox = validateCheckbox(checkbox1, message.conditions)
       if (resultFirstName && resultLastName && resultEmail && resultBirthdate && resultQuantity && resultLocations && resultCheckbox) {
           showValidationMessage()  
         console.log("success")
