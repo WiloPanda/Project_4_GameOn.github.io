@@ -30,8 +30,9 @@ img {
 }
 
 .topnav {
-  overflow: hidden;
   margin: 3.5%;
+  display: flex;
+  justify-content: space-between;
 }
 .header-logo {
     float: left;
@@ -76,6 +77,10 @@ img {
     z-index: 1000;
     background-color: #fff;
     padding: 5px 20px;
+  }
+
+  .header-logo img {
+    width: 80%;
   }
 
   .content {
@@ -194,6 +199,7 @@ main {
 .content {
   margin: 5% auto;
   width: 100%;
+  min-height: 850px;
   max-width: 500px;
   animation-name: modalopen;
   animation-duration: var(--modal-duration);
@@ -375,8 +381,8 @@ input[data-error]::after {
 
 @media screen and (max-width: 768px) {
 .close {
-  top:105px;
-}
+  top: 65px;
+  }
 }
 
 .btn-submit,
@@ -391,6 +397,7 @@ input[data-error]::after {
   cursor: pointer;
   border: 0;
 }
+
 /* custom select styles */
 .custom-select {
   position: relative;
@@ -457,11 +464,13 @@ input[data-error]::after {
 .same-as-selected {
   background-color: rgba(0, 0, 0, 0.1);
 }
+
 /* custom select end */
 .text-label {
   font-weight: normal;
   font-size: 16px;
 }
+
 .hero-section {
   border-radius: 10px;
   display: grid;
@@ -470,6 +479,7 @@ input[data-error]::after {
   box-shadow: 0 2px 7px 2px rgba(0, 0, 0, 0.2);
   margin-bottom: 10px;
 }
+
 .hero-content {
   padding: 51px 67px;
   grid-column: span 4;
@@ -478,6 +488,7 @@ input[data-error]::after {
   position: relative;
   text-align: left;
 }
+
 .hero-content::after {
   content: "";
   width: 100%;
