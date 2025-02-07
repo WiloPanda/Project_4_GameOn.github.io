@@ -191,7 +191,7 @@ form.addEventListener("submit", (event) => {
         email: email.value,
         birthdate: birthdate.value,
         quantity: quantity.value,
-        locations: locations,
+        locations: [...locations].find(location => location.checked),
         checkbox1: checkbox1.checked
       }
       console.log(objectsend)
